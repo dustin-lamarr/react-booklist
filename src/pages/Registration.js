@@ -27,7 +27,7 @@ export default function RegistrationPage() {
           <label htmlFor="email">
             Email
             <input
-              type="text"
+              type="email"
               name="email"
               id="email"
               value={values.email}
