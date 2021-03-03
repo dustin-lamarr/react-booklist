@@ -51,6 +51,7 @@ export default function useAuthentication({ values }) {
       body: JSON.stringify({
         email: values.email,
         password: values.password,
+        roleId: 1,
       }),
     })
       .then((res) => res.json())
