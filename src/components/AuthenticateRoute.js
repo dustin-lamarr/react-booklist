@@ -1,20 +1,8 @@
-import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
-import { AuthContext } from "../auth-context";
+import React from "react";
+import { Redirect } from "react-router-dom";
+import { useAuthenticated } from "../context/auth-context";
 
-export default function AuthenticateRoute({ component: Component, ...rest }) {
-  const { user } = useContext(AuthContext);
-  console.log(user);
-  return (
-    <Route
-      {...rest}
-      render={(routeProps) => {
-        if (user === null) {
-          return <Redirect to="/login" />;
-        } else {
-          return <Component {...routeProps} />;
-        }
-      }}
-    />
-  );
+export default function AuthenticateRoute({ children }) {
+  const { isAuthenticated } = useAuthenticated();
+  return isAuthenticated ? children : <Redirect to="/login" />;
 }

@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import AuthenticateRoute from "./AuthenticateRoute";
 import Header from "./Header";
 import LandingPage from "../pages/Landing";
 import LoginPage from "../pages/Login";
 import RegistrationPage from "../pages/Registration";
 import DashboardPage from "../pages/Dashboard";
-import TestingTailwind from "../Demo/TailwindTest";
-import { AuthContext } from "../auth-context";
+import { useAuthenticated } from "../context/auth-context";
 
 function App() {
-  const [user, setUser] = useState(null);
-
+  const { isAuthenticated } = useAuthenticated();
+  const authedRedirect = (Component) => {
+    return isAuthenticated ? <Redirect to="/dashboard" /> : <Component />;
+  };
   return (
     <>
-      <AuthContext.Provider value={{ user, setUser }}>
-        <Header />
-        <main>
-          <Switch>
-            <Route path="/" exact component={LandingPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/register" component={RegistrationPage} />
-            <AuthenticateRoute path="/dashboard" component={DashboardPage} />
-            <Route path="/tailwind" component={TestingTailwind} />
-          </Switch>
-        </main>
-      </AuthContext.Provider>
+      <Header />
+      <main>
+        <Switch>
+          <Route path="/" exact>
+            {authedRedirect(LandingPage)}
+          </Route>
+          <Route path="/login">{authedRedirect(LoginPage)}</Route>
+          <Route path="/register">{authedRedirect(RegistrationPage)}</Route>
+          <AuthenticateRoute path="/dashboard">
+            <DashboardPage />
+          </AuthenticateRoute>
+        </Switch>
+      </main>
     </>
   );
 }
