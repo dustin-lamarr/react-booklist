@@ -1,28 +1,28 @@
-import React, { useContext } from "react";
-import { Redirect } from "react-router-dom";
-import { AuthContext } from "../auth-context";
-import useAuthentication from "../utils/useAuthentication";
-import useForm from "../utils/useForm";
+import React from "react";
+import { useHistory, withRouter } from "react-router-dom";
+import useAuthentication from "../hooks/useAuthentication";
+import { useAuthenticated } from "../context/auth-context";
+import useForm from "../hooks/useForm";
 
-export default function LoginPage() {
+function LoginPage() {
+  const { setAuthenticated } = useAuthenticated();
+  const history = useHistory();
   const { values, updateValue } = useForm({
-    email: "",
-    password: "",
+    email: "alex@gmail.com",
+    password: "supersecret",
   });
-
-  const { user } = useContext(AuthContext);
 
   const { error, loading, submitLogin } = useAuthentication({
     values,
   });
 
-  if (user) {
-    return <Redirect to="/dashboard" />;
-  }
-
-  function handleClick(e) {
+  async function handleClick(e) {
     e.preventDefault();
-    submitLogin(values);
+    const user = await submitLogin(values);
+    if (user) {
+      setAuthenticated(true);
+      history.push("/dashboard");
+    }
   }
 
   return (
@@ -31,7 +31,7 @@ export default function LoginPage() {
       <form onSubmit={handleClick}>
         <fieldset>
           <label htmlFor="email">
-            Email
+            Email:
             <input
               type="email"
               name="email"
@@ -42,7 +42,7 @@ export default function LoginPage() {
             />
           </label>
           <label htmlFor="password">
-            password
+            password:
             <input
               type="password"
               name="password"
@@ -65,3 +65,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default withRouter(LoginPage);

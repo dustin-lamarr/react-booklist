@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../auth-context";
 import { clearAuthToken } from "../utils/local-storage";
+import { useAuthenticated } from "../context/auth-context";
 
 export default function Header() {
-  const { user, setUser } = useContext(AuthContext);
+  const { setAuthenticated } = useAuthenticated();
+
   function logout() {
     clearAuthToken();
-    setUser(null);
+    setAuthenticated(false);
   }
+
   return (
     <header>
       <nav>
@@ -18,9 +20,6 @@ export default function Header() {
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/tailwind">Tailwind</Link>
           </li>
         </ul>
         <ul>

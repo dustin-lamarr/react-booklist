@@ -1,15 +1,12 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../auth-context";
+import { useState } from "react";
 import { API_BASE_URL } from "../config";
-import { saveAuthToken } from "./local-storage";
+import { saveAuthToken } from "../utils/local-storage";
 
 const storeAuthInfo = (accessToken) => {
-  // const decodedToken = jwtDecode(accessToken);
   saveAuthToken(accessToken);
 };
 
 export default function useAuthentication({ values }) {
-  const { user, setUser } = useContext(AuthContext);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +14,7 @@ export default function useAuthentication({ values }) {
     setLoading(true);
     setError(false);
 
-    await fetch(`${API_BASE_URL}/authentication`, {
+    return await fetch(`${API_BASE_URL}/authentication`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -31,7 +28,7 @@ export default function useAuthentication({ values }) {
       .then((res) => res.json())
       .then(({ accessToken, user }) => {
         storeAuthInfo(accessToken);
-        setUser(user);
+        return user;
       })
       .catch((error) => {
         console.log(error);
@@ -39,7 +36,6 @@ export default function useAuthentication({ values }) {
   }
 
   async function submitRegistration(e) {
-    e.preventDefault();
     setLoading(true);
     setError(false);
 
@@ -59,7 +55,7 @@ export default function useAuthentication({ values }) {
         console.log(error);
       });
 
-    await fetch(`${API_BASE_URL}/authentication`, {
+    return await fetch(`${API_BASE_URL}/authentication`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -73,7 +69,7 @@ export default function useAuthentication({ values }) {
       .then((res) => res.json())
       .then(({ accessToken, user }) => {
         storeAuthInfo(accessToken);
-        setUser(user);
+        return user;
       })
       .catch((error) => {
         console.log(error);

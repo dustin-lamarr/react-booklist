@@ -1,31 +1,36 @@
-import React, { useContext } from "react";
-import useForm from "../utils/useForm";
-import { AuthContext } from "../auth-context";
-import useAuthentication from "../utils/useAuthentication";
-import { Redirect } from "react-router-dom";
+import React from "react";
+import { useHistory, withRouter } from "react-router-dom";
+import useAuthentication from "../hooks/useAuthentication";
+import { useAuthenticated } from "../context/auth-context";
+import useForm from "../hooks/useForm";
 
-export default function RegistrationPage() {
+function RegistrationPage() {
+  const { setAuthenticated } = useAuthenticated();
+  const history = useHistory();
   const { values, updateValue } = useForm({
-    email: "",
-    password: "",
-    confirmPassword: "",
+    email: "alex@gmail.com",
+    password: "supersecret",
+    confirmPassword: "supersecret",
   });
-
-  const { user } = useContext(AuthContext);
 
   const { error, loading, submitRegistration } = useAuthentication({ values });
 
-  if (user) {
-    return <Redirect to="dashboard" />;
+  async function handleClick(e) {
+    e.preventDefault();
+    const user = await submitRegistration(values);
+    if (user) {
+      setAuthenticated(true);
+      history.push("/dashboard");
+    }
   }
 
   return (
     <div>
       <h2>Registration Page</h2>
-      <form onSubmit={submitRegistration}>
+      <form onSubmit={handleClick}>
         <fieldset>
           <label htmlFor="email">
-            Email
+            Email:
             <input
               type="email"
               name="email"
@@ -36,7 +41,7 @@ export default function RegistrationPage() {
             />
           </label>
           <label htmlFor="password">
-            password
+            password:
             <input
               type="password"
               name="password"
@@ -47,7 +52,7 @@ export default function RegistrationPage() {
             />
           </label>
           <label htmlFor="confirmPassword">
-            Confirm password
+            Confirm password:
             <input
               type="password"
               name="confirmPassword"
@@ -66,3 +71,5 @@ export default function RegistrationPage() {
     </div>
   );
 }
+
+export default withRouter(RegistrationPage);
