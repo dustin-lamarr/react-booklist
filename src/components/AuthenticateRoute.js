@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { useAuthenticated } from "../context/auth-context";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function AuthenticateRoute({ children }) {
-  const { isAuthenticated } = useAuthenticated();
-  return isAuthenticated ? children : <Redirect to="/login" />;
+  const { isAuthenticated } = useAuth0();
+  return isAuthenticated ? children : <Redirect to="/" />;
 }
