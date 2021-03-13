@@ -12,6 +12,8 @@ ReactDOM.render(
       domain="utahfcc.us.auth0.com"
       clientId="HHZh0i3sjWdpntTOKAq5YAYJrTgjYkym"
       redirectUri={window.location.origin}
+      audience="https://utahfcc.us.auth0.com/api/v2/"
+      scope="read:current_user update:current_user_metadata create:lists read:lists edit:lists delete:lists"
     >
       <BrowserRouter>
         <App />
