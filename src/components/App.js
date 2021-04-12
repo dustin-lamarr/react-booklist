@@ -7,7 +7,6 @@ import Header from "./Header";
 import LandingPage from "../pages/Landing";
 import DashboardPage from "../pages/Dashboard";
 import ProfilePage from "../pages/Profile";
-import SendRequest from "../pages/sendRequest";
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -27,9 +26,6 @@ function App() {
           </AuthenticateRoute>
           <AuthenticateRoute path="/profile">
             <ProfilePage />
-          </AuthenticateRoute>
-          <AuthenticateRoute path="/send">
-            <SendRequest />
           </AuthenticateRoute>
         </Switch>
       </main>

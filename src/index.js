@@ -8,12 +8,13 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* This is the context for auth0 authorization */}
     <Auth0Provider
       domain="utahfcc.us.auth0.com"
       clientId="HHZh0i3sjWdpntTOKAq5YAYJrTgjYkym"
       redirectUri={window.location.origin}
       audience="https://utahfcc.us.auth0.com/api/v2/"
-      scope="read:current_user update:current_user_metadata create:lists read:lists edit:lists delete:lists"
+      scope="read:current_user update:current_user_metadata"
     >
       <BrowserRouter>
         <App />
