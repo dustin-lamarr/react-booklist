@@ -14,7 +14,6 @@ export default function Header() {
   );
 
   let profile = null;
-  const send = null;
   if (isAuthenticated) {
     homeButton = (
       <li className="mr-5">
