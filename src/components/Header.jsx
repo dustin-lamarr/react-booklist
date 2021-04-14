@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import LoginButton from "./LoginButton";
-import LogoutButton from "./LogoutButton";
-import { useAuth0 } from "@auth0/auth0-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 export default function Header() {
   const { isAuthenticated } = useAuth0();
@@ -14,7 +14,6 @@ export default function Header() {
   );
 
   let profile = null;
-  let send = null;
   if (isAuthenticated) {
     homeButton = (
       <li className="mr-5">
@@ -26,11 +25,6 @@ export default function Header() {
         <Link to="/profile">Profile</Link>
       </li>
     );
-    send = (
-      <li className="mr-5">
-        <Link to="/send">Send</Link>
-      </li>
-    );
   }
 
   return (
@@ -39,7 +33,6 @@ export default function Header() {
         <ul className="flex">
           {homeButton}
           {profile}
-          {send}
         </ul>
         <ul className="flex">
           <LoginButton />

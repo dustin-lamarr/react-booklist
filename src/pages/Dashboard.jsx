@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import Book from "../components/Book";
-// import books from "../data/books";
-import useBooksApi from "../hooks/useBooksApi";
-import { saveAuthToken } from "../utils/local-storage";
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import Book from '../components/Book';
+import books from '../data/books';
+import { saveAuthToken } from '../utils/local-storage';
 
 export default function DashboardPage() {
+  const [acessToken, setAccessToken] = useState();
   const { getAccessTokenSilently } = useAuth0();
   const { getAllBooks } = useBooksApi();
   const [books, setBooks] = useState();
 
   useEffect(() => {
-    let accessToken;
     const getAccessToken = async () => {
       try {
-        accessToken = await getAccessTokenSilently({
-          audience: `https://booklist/api`,
-          scope: "read:current_user",
+        const retrievedAccessToken = await getAccessTokenSilently({
+          audience: 'https://booklist/api',
+          scope: 'read:current_user',
         });
-        saveAuthToken(accessToken);
+        setAccessToken(retrievedAccessToken);
+        saveAuthToken(acessToken);
       } catch (e) {
         console.log(e.message);
       }
@@ -32,8 +32,7 @@ export default function DashboardPage() {
       }
     };
     getAccessToken();
-    getAllBooksEffect();
-  });
+  }, [acessToken]);
 
   return (
     <section className="bg-gray-100 p-10">
@@ -42,9 +41,9 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-x-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mx-6">
-        {books
-          ? books.map((book, i) => <Book book={book} key={"book" + i} />)
-          : "Loading"}
+        {books.map((book, i) => (
+          <Book book={book} key={`book${i}`} />
+        ))}
       </div>
     </section>
   );
