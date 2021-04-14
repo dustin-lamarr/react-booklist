@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { loadAuthToken } from "../utils/local-storage";
+import React, { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { loadAuthToken } from '../utils/local-storage';
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
@@ -8,7 +8,7 @@ const Profile = () => {
 
   useEffect(() => {
     const getUserMetadata = async () => {
-      const domain = "utahfcc.us.auth0.com";
+      const domain = 'utahfcc.us.auth0.com';
       const accessToken = loadAuthToken();
       try {
         const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user.sub}`;
@@ -24,7 +24,7 @@ const Profile = () => {
       }
     };
     getUserMetadata();
-  });
+  }, []);
 
   return (
     isAuthenticated && (
@@ -36,7 +36,7 @@ const Profile = () => {
         {userMetadata ? (
           <pre>{JSON.stringify(userMetadata, null, 2)}</pre>
         ) : (
-          "No user metadata defined"
+          'No user metadata defined'
         )}
       </section>
     )
