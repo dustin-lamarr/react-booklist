@@ -14,7 +14,7 @@ export default function Header() {
   );
 
   let profile = null;
-  let send = null;
+  const send = null;
   if (isAuthenticated) {
     homeButton = (
       <li className="mr-5">
@@ -26,11 +26,6 @@ export default function Header() {
         <Link to="/profile">Profile</Link>
       </li>
     );
-    send = (
-      <li className="mr-5">
-        <Link to="/send">Send</Link>
-      </li>
-    );
   }
 
   return (
@@ -39,7 +34,6 @@ export default function Header() {
         <ul className="flex">
           {homeButton}
           {profile}
-          {send}
         </ul>
         <ul className="flex">
           <LoginButton />
