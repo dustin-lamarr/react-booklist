@@ -7,27 +7,21 @@ import { saveAuthToken } from '../utils/local-storage';
 export default function DashboardPage() {
   const { getAccessTokenSilently } = useAuth0();
   const { getAllBooks } = useBooksApi();
-  const [acessToken, setAccessToken] = useState();
   const [books, setBooks] = useState([]);
 
-  useEffect(() => {
+  useEffect(async () => {
     const getAccessToken = async () => {
       try {
         const retrievedAccessToken = await getAccessTokenSilently({
           audience: 'https://booklist/api',
           scope: 'read:current_user',
         });
-        setAccessToken(retrievedAccessToken);
-        saveAuthToken(acessToken);
+        saveAuthToken(retrievedAccessToken);
       } catch (e) {
         console.log(e.message);
       }
     };
 
-    getAccessToken();
-  }, [acessToken]);
-
-  useEffect(() => {
     const getAllBooksEffect = async () => {
       try {
         const data = await getAllBooks();
@@ -36,6 +30,8 @@ export default function DashboardPage() {
         console.log(e.message);
       }
     };
+
+    await getAccessToken();
     getAllBooksEffect();
   }, []);
 
