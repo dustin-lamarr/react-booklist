@@ -11,10 +11,9 @@ export default function DashboardPage() {
 
   useEffect(async () => {
     const getAccessToken = async () => {
-      const domain = 'utahfcc.us.auth0.com';
       try {
         const retrievedAccessToken = await getAccessTokenSilently({
-          audience: `https://${domain}/api/v2/`,
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
           scope: 'read:current_user',
         });
         saveAuthToken(retrievedAccessToken);
